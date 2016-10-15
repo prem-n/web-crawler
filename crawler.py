@@ -8,7 +8,14 @@ PHILOSOPHY = "https://en.wikipedia.org/wiki/Philosophy"
 
 def check_paranthesis(solution, line):
     pattern = '(<a' + solution + '</a>)'
-    #re.findall('()')
+    #TODO: Need to fix Hyperlinks within brackets far off.
+    #pattern = r'\(.*' + re.escape(solution) + r'.*\)'
+    #match = re.findall(pattern, line)
+    #print line
+    #if match:
+    #    return False
+    #else:
+    #    return True
     if pattern in line:
         return False
     else:
@@ -41,7 +48,7 @@ def get_random_article():
     
 def get_link_from_page(page):
     paragraphs = get_paragraphs(str(page))
-    print paragraphs
+    #print paragraphs
     for paragraph in paragraphs:
         first_hyperlink = get_first_hyperlink(str(paragraph))
         if first_hyperlink:
@@ -54,8 +61,8 @@ def get_url_from_link(link):
 
 def main():
     visited = []
-    #url = 'https://en.wikipedia.org/wiki/Art'
-    url = 'https://en.wikipedia.org/wiki/Physics'
+    url = 'https://en.wikipedia.org/wiki/Art'
+    #url = 'https://en.wikipedia.org/wiki/Physics'
     #while url not in visited and url != PHILOSOPHY:
     #    visited.append(url)
     #    page = get_page_from_url(url)
@@ -70,38 +77,4 @@ def main():
 
 main()
 #print get_random_article()
-
-
-    
-#new_p = []
-#for line in paragraphs:
-#    new_p.append(line.split('</a>'))
-    
-#hyperlinks = re.findall(r'<a(.*?)</a>', str(paragraphs))
-#hyperlinks = re.findall(r'(.*?cite_note.*?)', str(hyperlinks))
-#(?!.*Drive)
-
-#p = re.compile('(href="#cite_note-OD-1">[1])')
-#new_hyperlinks = p.findall(str(hyperlinks))
-#new_hyperlinks = re.findall('(href="#cite_note-OD-1">[1])', str(hyperlinks))
-#new_hyperlinks = re.findall(r'<sup(.*?)</sup>', str(hyperlinks))
-
-#hyperlinks = re.findall(r'href=(.*?)[^cite]?]', str(hyperlinks))
-
-#for eachP in paragraphs:
-#    print(eachP)
-
-
-    
-
-
-#page=urllib2.urlopen(url)
-##soup = BeautifulSoup(page.read(), "html5lib")
-#paragraphs=soup.findAll('p')
-#hyperlinks=str(paragraphs).find('a')
-
-#print str(paragraphs)
-
-##for link in soup.find_all('a'):
- #   print(link.get('href'))
 
