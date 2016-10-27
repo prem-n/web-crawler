@@ -24,6 +24,7 @@ class Wikipedia(object):
     negative = 0
     total_path_length = 0
     number_of_pages = 0
+    all_paths = list()
     verbose = None
 
     def __init__(self, number_of_pages, verbose):
@@ -179,6 +180,9 @@ class Wikipedia(object):
         :param page: The raw HTML source code
         :return: String
         """
+        if not page:
+            return None
+
         paragraphs = self.__get_paragraphs(str(page))
         # print paragraphs
         for paragraph in paragraphs:
@@ -199,7 +203,7 @@ class Wikipedia(object):
             page = response.read()
             return page
         except urllib2.HTTPError:
-            self.__get_page_from_url(url)
+            return None
 
     def __get_random_url(self):
         """
@@ -208,8 +212,11 @@ class Wikipedia(object):
         :return: String
         """
         page = self.__get_page_from_url(self.RANDOM_URL)
-        url = re.findall(r'<link rel="canonical" href="(.*?)"/>', page)
-        return url.pop()
+        if not page:
+            return self.__get_random_url()
+        else:
+            url = re.findall(r'<link rel="canonical" href="(.*?)"/>', page)
+            return url.pop()
 
     def crawl(self):
         """
@@ -254,10 +261,13 @@ class Wikipedia(object):
 
             if reached:
                 print ' ==> Path length = ' + str(count)
+                if count != 0:
+                    self.all_paths.append(count)
                 continue
 
             if url == self.PHILOSOPHY:
                 print ' ==> Path length = ' + str(count)
+                self.all_paths.append(count)
                 self.positive += 1
                 self.total_path_length += count
                 for j in range(len(visited)-1):
@@ -285,7 +295,7 @@ class Wikipedia(object):
         print 'The mean of the path length for ' + \
               str(self.number_of_pages) + ' pages is ' + str(mean)
 
-        median = int(numpy.median(numpy.array(self.positive)))
+        median = int(numpy.median(numpy.array(self.all_paths)))
         print 'The median of the path lengths for ' + \
               str(self.number_of_pages) + ' pages is ' + str(median)
         print '\n\n'
