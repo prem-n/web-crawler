@@ -1,11 +1,44 @@
+#!/usr/bin/env python
+
+"""
+Module for crawling through Wikipedia.
+
+Each URL is represented as a Hyperlink object. Each Hyperlink object contains
+the path length from this page to PHILOSOPHY. This is used to optimize the
+path length computations for random pages by re-using path lengths from visited
+pages.
+
+Candidate solutions are validated by checking if the hyperlinks are valid.
+Some of the hyperlinks which are italicized or present inside parenthesis are
+invalid. These candidate solutions are discarded and the next candidate solution
+is evaluated.
+
+Author     : Prem Nagarajan
+Created on : 20161026
+
+"""
+
 from __future__ import division
-import urllib2
-import re
 import numpy
+import re
+import urllib2
 
 
 class Wikipedia(object):
+    """
+    This class serves as a container for storing all the business logic
+    for extracting and processing a Wikipedia page.
+    
+    """
+
     class Hyperlink():
+        """
+        This class is used for storing a hyperlink and the length from it to
+        PHILOSOPHY. This helps in re-using the path length computation from
+        previously visited pages.
+        
+        """
+        
         next_url = None
         to_philosophy = None
 
@@ -16,9 +49,12 @@ class Wikipedia(object):
         def  __str__(self):
             return str([self.next_url, self.to_philosophy])
 
+    # Constants
     RANDOM_URL = "https://en.wikipedia.org/wiki/Special:Random"
     HOME_PAGE  = "https://en.wikipedia.org"
     PHILOSOPHY = "https://en.wikipedia.org/wiki/Philosophy"
+    
+    # For tracking the path lengths and memoization. 
     hyperlinks = dict()
     positive = 0
     negative = 0
@@ -28,6 +64,12 @@ class Wikipedia(object):
     verbose = None
 
     def __init__(self, number_of_pages, verbose):
+        """
+        Construts a wikipedia object for the specified number of pages.
+
+        :param number_of_pages: The number of random pages to crawl through
+        :param verbose: If specified, detailed executions steps are displayed.
+        """
         self.number_of_pages = number_of_pages
         self.verbose = verbose
 
@@ -184,7 +226,6 @@ class Wikipedia(object):
             return None
 
         paragraphs = self.__get_paragraphs(str(page))
-        # print paragraphs
         for paragraph in paragraphs:
             first_hyperlink = self.__get_first_hyperlink(str(paragraph))
             if first_hyperlink:
