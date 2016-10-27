@@ -217,12 +217,12 @@ class Wikipedia(object):
 
         :return: None
         """
-        print 'Total number of pages crawled = ' + str(self.number_of_pages)
+        print '\n\n\nTotal number of pages crawled = ' + str(self.number_of_pages)
         print 'Number of pages reaching Philosophy = ' + str(self.positive)
         print 'Number of pages not reaching Philosophy = ' + str(self.negative)
 
         percent = 100 * self.positive / self.number_of_pages
-        print str(percent) + '% of pages often lead to philosophy.'
+        print '\n\n' + str(percent) + '% of pages often lead to philosophy.'
 
         mean = int(self.total_path_length / self.positive)
         print 'The mean of the path length for ' + \
@@ -231,6 +231,7 @@ class Wikipedia(object):
         median = int(numpy.median(numpy.array(self.positive)))
         print 'The median of the path lengths for ' + \
               str(self.number_of_pages) + ' pages is ' + str(median)
+        print '\n\n'
 
 
 
@@ -244,7 +245,7 @@ class Wikipedia(object):
             url = self.__get_random_url()
             visited = []
             count = 0
-            print str(i+1) + ") " + url,
+            print "\n" + str(i+1) + ") " + url
             reached = False
             while url not in visited and url != self.PHILOSOPHY:
                 visited.append(url)
