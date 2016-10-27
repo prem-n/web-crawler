@@ -211,30 +211,6 @@ class Wikipedia(object):
         url = re.findall(r'<link rel="canonical" href="(.*?)"/>', page)
         return url.pop()
 
-    def print_stats(self):
-        """
-        Prints the stats of the previous crawl.
-
-        :return: None
-        """
-        print '\n\n\nTotal number of pages crawled = ' + str(self.number_of_pages)
-        print 'Number of pages reaching Philosophy = ' + str(self.positive)
-        print 'Number of pages not reaching Philosophy = ' + str(self.negative)
-
-        percent = 100 * self.positive / self.number_of_pages
-        print '\n\n' + str(percent) + '% of pages often lead to philosophy.'
-
-        mean = int(self.total_path_length / self.positive)
-        print 'The mean of the path length for ' + \
-              str(self.number_of_pages) + ' pages is ' + str(mean)
-
-        median = int(numpy.median(numpy.array(self.positive)))
-        print 'The median of the path lengths for ' + \
-              str(self.number_of_pages) + ' pages is ' + str(median)
-        print '\n\n'
-
-
-
     def crawl(self):
         """
         Crawls through Wikipedia till the page Philosophy is reached.
@@ -291,3 +267,25 @@ class Wikipedia(object):
             else:
                 print " ==> Doesn't reach Philosophy"
                 self.negative += 1
+
+    def print_stats(self):
+        """
+        Prints the stats of the previous crawl.
+
+        :return: None
+        """
+        print '\n\n\nTotal number of pages crawled = ' + str(self.number_of_pages)
+        print 'Number of pages reaching Philosophy = ' + str(self.positive)
+        print 'Number of pages not reaching Philosophy = ' + str(self.negative)
+
+        percent = 100 * self.positive / self.number_of_pages
+        print '\n\n' + str(percent) + '% of pages often lead to philosophy.'
+
+        mean = int(self.total_path_length / self.positive)
+        print 'The mean of the path length for ' + \
+              str(self.number_of_pages) + ' pages is ' + str(mean)
+
+        median = int(numpy.median(numpy.array(self.positive)))
+        print 'The median of the path lengths for ' + \
+              str(self.number_of_pages) + ' pages is ' + str(median)
+        print '\n\n'
